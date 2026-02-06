@@ -11,6 +11,12 @@ const server = http.createServer(
     if (req.method === "GET" && req.url === "/api/episode") {
       await getFilterEpisodes(req, res);
     }
+
+    if (req.method === "POST" && req.url === "/api/podcast") {
+      // create a new podcast record in the DB
+      const { createPodcast } = await import("./controllers/podcast");
+      await createPodcast(req, res);
+    }
   }
 );
 
