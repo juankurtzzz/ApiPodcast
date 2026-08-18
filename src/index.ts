@@ -1,27 +1,10 @@
-import * as http from "http";
-import { getFilterEpisodes, getListEpisodes } from "./controllers/podcast";
-import { filterEpisodes } from "./services/filterepisodes";
+import express, { type Express, type Request, type Response } from 'express';
 
-const server = http.createServer(
-  async (req: http.IncomingMessage, res: http.ServerResponse) => {
-    if (req.method === "GET" && req.url === "/api/list") {
-      await getListEpisodes(req, res);
-    }
+const app: Express = express();
+const PORT = process.env.PORT;
 
-    if (req.method === "GET" && req.url === "/api/episode") {
-      await getFilterEpisodes(req, res);
-    }
+app.use(express.json());
 
-    if (req.method === "POST" && req.url === "/api/podcast") {
-      // create a new podcast record in the DB
-      const { createPodcast } = await import("./controllers/podcast");
-      await createPodcast(req, res);
-    }
-  }
-);
-
-const port = process.env.PORT;
-
-server.listen(port, () => {
-  console.log(`Rodando na porta ${port}`);
+app.listen(PORT, () => {
+  console.log("API running on " + PORT)
 });
